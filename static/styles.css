@@ -159,7 +159,7 @@ kbd {
 textarea,
 pre {
   width: 100%;
-  min-height: 410px;
+  height: 410px;
   border: 1px solid rgba(138, 190, 181, 0.24);
   border-radius: 12px;
   padding: 14px;
@@ -444,8 +444,7 @@ pre {
 
   textarea,
   pre {
-    max-height: 300px;
-    overflow-y: scroll;
+    min-height: 300px;
   }
 
   .topbar {
