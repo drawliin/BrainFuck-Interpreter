@@ -265,6 +265,25 @@ pre {
   color: #c8e7e2;
 }
 
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #082126;
+  background: linear-gradient(135deg, #2dd4bf 0%, #ff9f43 100%);
+  border-radius: 999px;
+  padding: 8px 13px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.about-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(3, 20, 28, 0.35);
+}
+
 .small-note {
   color: var(--muted);
   font-size: 0.85rem;
@@ -362,6 +381,7 @@ pre {
 .ref-card code {
   font-family: "IBM Plex Mono", monospace;
   font-size: 1.15rem;
+  font-weight: bold;
   color: #a8f1e8;
 }
 
