@@ -119,7 +119,7 @@ async function runProgram() {
     statOutput.textContent = String(result.length);
   } catch (err) {
     setStatus("error", "Server down");
-    output.textContent = "Could not reach backend. Start server with: go run .";
+    output.textContent = "Could not reach backend.";
     statOutput.textContent = "0";
   } finally {
     runBtn.disabled = false;
