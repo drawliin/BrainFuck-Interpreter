@@ -10,7 +10,16 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		if err := startServer(":8080"); err != nil {
+		addr := ":8080"
+		if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+			if strings.HasPrefix(port, ":") {
+				addr = port
+			} else {
+				addr = ":" + port
+			}
+		}
+
+		if err := startServer(addr); err != nil {
 			fmt.Fprintln(os.Stderr, "server error:", err)
 			os.Exit(1)
 		}
@@ -87,6 +96,7 @@ func run(source string) (string, error) {
 func startServer(addr string) error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/run", runHandler)
+	mux.HandleFunc("/healthz", healthHandler)
 	mux.Handle("/", http.FileServer(http.Dir("static")))
 
 	fmt.Println("Brainfuck UI available at http://localhost" + addr)
@@ -126,6 +136,11 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, runResponse{Output: output})
+}
+
+func healthHandler(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte("ok"))
 }
 
 func writeJSON(w http.ResponseWriter, status int, payload runResponse) {
