@@ -57,3 +57,19 @@ abc$
 $ go run .
 $
 ```
+
+### Web UI Mode
+
+If you run the project without arguments, it now starts a web server and serves a frontend:
+
+```console
+$ go run .
+Brainfuck UI available at http://localhost:8080
+```
+
+Open `http://localhost:8080` in your browser, paste Brainfuck code, and click **Run Program**.
+
+The frontend calls:
+
+- `POST /api/run` with JSON body: `{"code":"<brainfuck program>"}`
+- JSON response: `{"output":"..."}` or `{"error":"..."}`
