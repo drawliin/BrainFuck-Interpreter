@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainfuck Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-shape bg-a"></div>
+  <div class="bg-shape bg-b"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="kicker">Web Interpreter</p>
+        <h1>Brainfuck Studio</h1>
+        <p class="subtitle">A tiny esoteric language with only 8 commands.</p>
+      </div>
+      <p class="hint">Run code with <kbd>Ctrl</kbd> + <kbd>Enter</kbd></p>
+    </header>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Source</h2>
+          <span id="op-count">0 chars</span>
+        </div>
+        <textarea id="bf-input" placeholder="Paste Brainfuck code here..."></textarea>
+        <div class="actions">
+          <button id="run-btn" class="btn primary">Run Program</button>
+          <button id="clear-btn" class="btn">Clear</button>
+          <button id="sample-btn" class="btn ghost">Load Hello World</button>
+        </div>
+      </article>
+
+      <article class="panel output-panel">
+        <div class="panel-head">
+          <h2>Output</h2>
+          <span id="status" class="status idle">Idle</span>
+        </div>
+        <pre id="output" aria-live="polite">Your output will appear here.</pre>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      <article class="panel about-panel">
+        <div class="panel-head">
+          <h2>What Is Brainfuck?</h2>
+        </div>
+        <p>
+          Brainfuck is an esoteric language invented in 1993 by Urban Muller.
+          It uses only eight symbols to manipulate a memory tape and print output.
+          Even with this tiny syntax, it is Turing complete.
+        </p>
+        <p>
+          Any character that is not one of the eight commands is ignored, so comments
+          and spacing are allowed. This makes it a fun language for puzzles and code golf.
+        </p>
+      </article>
+
+      <article class="panel analyzer-panel">
+        <div class="panel-head">
+          <h2>Live Analyzer</h2>
+          <span class="small-note">Updates while typing</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat-label">Valid ops</span>
+            <strong id="stat-ops">0</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Ignored chars</span>
+            <strong id="stat-ignored">0</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Max loop depth</span>
+            <strong id="stat-depth">0</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Last output size</span>
+            <strong id="stat-output">0</strong>
+          </div>
+        </div>
+
+        <div class="command-bars">
+          <h3>Command Distribution</h3>
+          <div class="bar-list">
+            <div class="bar-row" data-cmd=">">
+              <span class="bar-label">&gt; move right</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd="<">
+              <span class="bar-label">&lt; move left</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd="+">
+              <span class="bar-label">+ increment</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd="-">
+              <span class="bar-label">- decrement</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd=".">
+              <span class="bar-label">. output</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd=",">
+              <span class="bar-label">, input</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd="[">
+              <span class="bar-label">[ loop start</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+            <div class="bar-row" data-cmd="]">
+              <span class="bar-label">] loop end</span>
+              <div class="bar-track"><span class="bar-fill"></span></div>
+              <span class="bar-value">0</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="reference panel">
+      <div class="panel-head">
+        <h2>Brainfuck Command Reference</h2>
+      </div>
+      <div class="reference-grid">
+        <article class="ref-card"><code>&gt;</code><p>Move pointer one cell to the right.</p></article>
+        <article class="ref-card"><code>&lt;</code><p>Move pointer one cell to the left.</p></article>
+        <article class="ref-card"><code>+</code><p>Increment current cell value by 1.</p></article>
+        <article class="ref-card"><code>-</code><p>Decrement current cell value by 1.</p></article>
+        <article class="ref-card"><code>.</code><p>Output current cell as an ASCII character.</p></article>
+        <article class="ref-card"><code>,</code><p>Read one input byte into current cell.</p></article>
+        <article class="ref-card"><code>[</code><p>If cell is zero, jump forward to matching <code>]</code>.</p></article>
+        <article class="ref-card"><code>]</code><p>If cell is non-zero, jump back to matching <code>[</code>.</p></article>
+      </div>
+    </section>
+
+    <section class="examples">
+      <h3>Quick Examples</h3>
+      <div class="example-list">
+        <button class="chip" data-code="++++++++++[>+++++++>++++++++++>+++>+<<<<-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;.">Hello World</button>
+        <button class="chip" data-code="+++++[&gt;++++[&gt;+++&gt;+++&lt;&lt;-]&gt;&gt;.&gt;.&lt;&lt;&lt;-]">Hi</button>
+        <button class="chip" data-code="++++++++++[&gt;++++++++++&gt;++++++++++&gt;++++++++++&lt;&lt;&lt;-]&gt;---.&gt;--.&gt;-.&gt;++++++++++.">abc</button>
+        <button class="chip" data-code="+.+.+.+.+.">ASCII staircase</button>
+        <button class="chip" data-code="+++++[>++++++++<-]>+.">Single char demo</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
